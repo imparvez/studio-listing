@@ -1,9 +1,11 @@
+import CustomButton from './components/Button';
+
 function App() {
 
   return (
     <>
       <div>
-        Test app
+        <CustomButton buttonText='Hello World!' />
       </div>
     </>
   )
