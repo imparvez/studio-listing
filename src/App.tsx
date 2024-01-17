@@ -1,11 +1,15 @@
-import CustomButton from './components/Button';
+import StudioList from './components/StudioListDropDown';
 
 function App() {
-
   return (
     <>
-      <div>
-        <CustomButton buttonText='Hello World!' />
+      <div className='container'>
+        <div className='wrapper'>
+          <header>
+            <StudioList />  
+          </header>  
+          <main></main>
+        </div>
       </div>
     </>
   )
