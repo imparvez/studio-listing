@@ -1,3 +1,3 @@
-import { StudioList } from './StudioListDropDown';
+import { StudioListDropDown } from './StudioListDropDown';
 
-export default StudioList
+export default StudioListDropDown

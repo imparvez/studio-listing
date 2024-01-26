@@ -8,27 +8,27 @@ import axios from 'axios';
 
 import { API } from '../../constants/api';
 
-interface Studio {
+interface StudioListDropDownProps {
     id: string;
     title: string;
 }
 
-function StudioList() {
+function StudioListDropDown() {
   const [selectedStudio, setSelectedStudio] = useState('');
-  const [studioList, setStudioList] = useState<Studio[]>([]);
+  const [studioListDropDown, setStudioListDropDown] = useState<StudioListDropDownProps[]>([]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedStudio(event.target.value);
   };
 
-  const getStudioList = () => {
-    axios.get(API.studioList).then((data) => {
-        setStudioList(data?.data);
+  const getStudioListDropDown = () => {
+    axios.get(API.studioListDropDown).then((data) => {
+      setStudioListDropDown(data?.data);
       });
   }
 
   useEffect(() => {
-    getStudioList();
+    getStudioListDropDown();
   }, []);
 
   return (
@@ -43,7 +43,7 @@ function StudioList() {
           onChange={handleChange}
         >
             {
-                studioList?.map(({ id, title }: any) => {
+                studioListDropDown?.map(({ id, title }: any) => {
                     return (
                         <MenuItem key={id} value={id}>{title}</MenuItem>
                     )
@@ -55,4 +55,4 @@ function StudioList() {
   );
 }
 
-export { StudioList }
+export { StudioListDropDown }
