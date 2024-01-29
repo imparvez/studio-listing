@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import React from 'react'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -9,36 +8,32 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-import { API } from '../../constants/api';
+import studioDetailAPIStore from '../../store/studioDetailStore';
+import { StudioListState } from '../../interface';
 
-interface StudioListProps {
-    id: string;
-    title: string;
-    score: number;
-    released: string;
-    poster: string;
-    studioId: string;
-}
-
-const StudioList = () => {
-    const [studioList, setStudioList] = useState<StudioListProps[]>([]);
-    const getStudioList = () => {
-        axios.get(`${API.studioList}=pixar`).then((data) => {
-            setStudioList(data?.data);
-          });
+const StudioList: React.FC<StudioListState> = ({ list, loading, error }) => {
+    const {
+        setSelectedId
+      } = studioDetailAPIStore();
+      if(loading) {
+          return <div>Loading....</div>
       }
-    
-      useEffect(() => {
-        getStudioList();
-      }, []);
+
+      if(error) {
+        return <div>Error....</div>
+    }
+
+    const handleOnClick = (id: string) => {
+        setSelectedId(id);
+    }
 
     return (
         <div>
             {
-                studioList?.map(({ id, title, score, released, poster }: any) => {
+                list?.map(({ id, title, score, released, poster }: any) => {
                     return (
                         <List key={id} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            <ListItem alignItems="flex-start">
+                            <ListItem alignItems="flex-start" onClick={() => handleOnClick(id)}>
                                 <ListItemAvatar>
                                     <Avatar alt={title} src={poster} />
                                 </ListItemAvatar>

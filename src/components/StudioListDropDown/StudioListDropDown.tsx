@@ -1,56 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import axios from 'axios';
 
-import { API } from '../../constants/api';
+import { StudioListDropDownProps } from '../../interface';
 
-interface StudioListDropDownProps {
-    id: string;
-    title: string;
-}
-
-function StudioListDropDown() {
-  const [selectedStudio, setSelectedStudio] = useState('');
-  const [studioListDropDown, setStudioListDropDown] = useState<StudioListDropDownProps[]>([]);
-
-  const handleChange = (event: SelectChangeEvent) => {
+const StudioListDropDown: React.FC<StudioListDropDownProps> = ({ dropdownList, setSelectedStudio }) => {
+  const handleChange = (event: any) => {
     setSelectedStudio(event.target.value);
   };
 
-  const getStudioListDropDown = () => {
-    axios.get(API.studioListDropDown).then((data) => {
-      setStudioListDropDown(data?.data);
-      });
-  }
-
   useEffect(() => {
-    getStudioListDropDown();
-  }, []);
+    if(dropdownList) {
+      setSelectedStudio(dropdownList[0].title)
+    }
+  }, [dropdownList]);
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Select Studio</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedStudio}
-          label="Select Studio"
-          onChange={handleChange}
-        >
-            {
-                studioListDropDown?.map(({ id, title }: any) => {
-                    return (
-                        <MenuItem key={id} value={id}>{title}</MenuItem>
-                    )
-                })
-            }
-        </Select>
-      </FormControl>
+      {
+        dropdownList ? (
+          <label>
+            Pick a studio:
+            <select name="studioList" onChange={handleChange}>
+              {
+                    dropdownList?.map(({ id, title }: any) => {
+                        return (
+                            <option key={id} value={id}>{title}</option>
+                        )
+                    })
+                }
+            </select>
+          </label>
+        ): null
+      }
     </Box>
   );
 }
